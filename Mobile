@@ -1,0 +1,287 @@
+local Player = game.Players.LocalPlayer
+local UIS = game:GetService("UserInputService")
+
+local ScreenGui = Instance.new("ScreenGui", Player:WaitForChild("PlayerGui"))
+ScreenGui.Name = "RazorHub"
+ScreenGui.ResetOnSpawn = false
+
+-- Toggle Button
+local ToggleButton = Instance.new("TextButton", ScreenGui)
+ToggleButton.Size = UDim2.new(0, 120, 0, 40)
+ToggleButton.Position = UDim2.new(0, 10, 0.5, -20)
+ToggleButton.Text = "Toggle UI"
+ToggleButton.BackgroundColor3 = Color3.fromRGB(0, 85, 255)
+ToggleButton.TextColor3 = Color3.new(1, 1, 1)
+ToggleButton.Font = Enum.Font.GothamBold
+ToggleButton.TextSize = 14
+ToggleButton.BorderSizePixel = 0
+ToggleButton.AutoButtonColor = true
+ToggleButton.ZIndex = 10
+local ToggleStroke = Instance.new("UIStroke", ToggleButton)
+ToggleStroke.Color = Color3.fromRGB(255,255,255)
+ToggleStroke.Thickness = 1.5
+
+-- Main Frame
+local MainFrame = Instance.new("Frame", ScreenGui)
+MainFrame.Size = UDim2.new(0, 420, 0, 320)
+MainFrame.Position = UDim2.new(0.5, -210, 0.5, -160)
+MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+MainFrame.Visible = false
+MainFrame.Active = true
+MainFrame.Draggable = true
+MainFrame.ClipsDescendants = true
+
+local UICorner = Instance.new("UICorner", MainFrame)
+UICorner.CornerRadius = UDim.new(0, 12)
+
+local Gradient = Instance.new("UIGradient", MainFrame)
+Gradient.Color = ColorSequence.new({
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(10, 10, 40)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 85, 255))
+})
+Gradient.Rotation = 45
+
+local Shadow = Instance.new("ImageLabel", MainFrame)
+Shadow.AnchorPoint = Vector2.new(0.5, 0.5)
+Shadow.Position = UDim2.new(0.5, 0, 0.5, 10)
+Shadow.Size = UDim2.new(1, 30, 1, 30)
+Shadow.BackgroundTransparency = 1
+Shadow.Image = "rbxassetid://1316045217"
+Shadow.ImageTransparency = 0.6
+Shadow.ZIndex = -1
+
+-- Hub Title
+local Title = Instance.new("TextLabel", MainFrame)
+Title.Size = UDim2.new(1, 0, 0, 30)
+Title.Position = UDim2.new(0, 0, 0, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "RAZOR HUB - FF2"
+Title.Font = Enum.Font.GothamBlack
+Title.TextSize = 18
+Title.TextColor3 = Color3.new(1, 1, 1)
+
+-- Tabs
+local tabNames = {"Catching", "Movement", "Trolling"}
+local tabs, frames = {}, {}
+for i, name in ipairs(tabNames) do
+    local tabBtn = Instance.new("TextButton", MainFrame)
+    tabBtn.Size = UDim2.new(0, 120, 0, 26)
+    tabBtn.Position = UDim2.new(0, 10 + (i-1)*130, 0, 35)
+    tabBtn.Text = name
+    tabBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    tabBtn.TextColor3 = Color3.new(1, 1, 1)
+    tabBtn.Font = Enum.Font.Gotham
+    tabBtn.TextSize = 13
+    tabs[name] = tabBtn
+
+    local frame = Instance.new("ScrollingFrame", MainFrame)
+    frame.Size = UDim2.new(1, -20, 1, -70)
+    frame.Position = UDim2.new(0, 10, 0, 65)
+    frame.BackgroundTransparency = 1
+    frame.Visible = (i == 1)
+    frame.CanvasSize = UDim2.new(0, 0, 0, 200)
+    frame.ScrollBarThickness = 4
+    frames[name] = frame
+
+    tabBtn.MouseButton1Click:Connect(function()
+        for _, f in pairs(frames) do f.Visible = false end
+        frame.Visible = true
+    end)
+end
+
+-- Toggle States
+local toggleStates = {
+    BlatantMS = false,
+    LegitMS = false,
+    LfgMS = false,
+    CFrameWalk = false,
+    FtoTP = false
+}
+
+-- MS Loops (Blatant, Legit, Lfg)
+local function BlatantMSLoop()
+    while toggleStates.BlatantMS do
+        local char = Player.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            for _, football in workspace:GetChildren() do
+                if football.Name ~= "Football" or not football:IsA("BasePart") then continue end
+                local dist = (char.HumanoidRootPart.Position - football.Position).Magnitude
+                if dist < 25 then
+                    local L = char:FindFirstChild("CatchLeft")
+                    local R = char:FindFirstChild("CatchRight")
+                    if L and R then
+                        local mid = (L.Position + R.Position) / 2
+                        football.CFrame = CFrame.new(mid)
+                        football.CanCollide = false
+                        firetouchinterest(L, football, 0)
+                        firetouchinterest(R, football, 0)
+                        task.wait()
+                        firetouchinterest(L, football, 1)
+                        firetouchinterest(R, football, 1)
+                    end
+                end
+            end
+        end
+        task.wait()
+    end
+end
+
+local function LegitMSLoop()
+    while toggleStates.LegitMS do
+        local char = Player.Character
+        local char = Player.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            for _, football in workspace:GetChildren() do
+                if football.Name ~= "Football" or not football:IsA("BasePart") then continue end
+                local dist = (char.HumanoidRootPart.Position - football.Position).Magnitude
+                if dist < 12.5 then
+                    local L = char:FindFirstChild("CatchLeft")
+                    local R = char:FindFirstChild("CatchRight")
+                    if L and R then
+                        local mid = (L.Position + R.Position) / 2
+                        football.CFrame = CFrame.new(mid)
+                        football.CanCollide = false
+                        firetouchinterest(L, football, 0)
+                        firetouchinterest(R, football, 0)
+                        task.wait()
+                        firetouchinterest(L, football, 1)
+                        firetouchinterest(R, football, 1)
+                    end
+                end
+            end
+        end
+        task.wait()
+    end
+end
+
+local function LfgMSLoop()
+    while toggleStates.LfgMS do
+        local char = Player.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            for _, football in workspace:GetChildren() do
+                if football.Name ~= "Football" or not football:IsA("BasePart") then continue end
+                local dist = (char.HumanoidRootPart.Position - football.Position).Magnitude
+                if dist < 7.5 then
+                    local L = char:FindFirstChild("CatchLeft")
+                    local R = char:FindFirstChild("CatchRight")
+                    if L and R then
+                        local mid = (L.Position + R.Position) / 2
+                        football.CFrame = CFrame.new(mid)
+                        football.CanCollide = false
+                        firetouchinterest(L, football, 0)
+                        firetouchinterest(R, football, 0)
+                        task.wait()
+                        firetouchinterest(L, football, 1)
+                        firetouchinterest(R, football, 1)
+                    end
+                end
+            end
+        end
+        task.wait()
+    end
+end
+
+-- F to TP (Relative to Walking Direction)
+UIS.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.F and toggleStates.FtoTP then
+        local Players = game:GetService("Players")
+        local UserInputService = game:GetService("UserInputService")
+
+        local player = Players.LocalPlayer
+        local character = player.Character or player.CharacterAdded:Wait()
+        local hrp = character:WaitForChild("HumanoidRootPart")
+        local humanoid = character:WaitForChild("Humanoid")
+
+        -- Update on respawn
+        player.CharacterAdded:Connect(function(char)
+            character = char
+            hrp = char:WaitForChild("HumanoidRootPart")
+            humanoid = char:WaitForChild("Humanoid")
+        end)
+
+        if humanoid.MoveDirection.Magnitude > 0 then
+            local moveDir = humanoid.MoveDirection.Unit * 5
+            hrp.CFrame = hrp.CFrame + moveDir
+        end
+    end
+end)
+
+-- CFrame WalkSpeed Function (Relative to Walking Direction)
+local function CFrameWalkSpeed()
+    local Players = game:GetService("Players")
+    local RunService = game:GetService("RunService")
+    local UserInputService = game:GetService("UserInputService")
+
+    local player = Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local hrp = character:WaitForChild("HumanoidRootPart")
+    local humanoid = character:WaitForChild("Humanoid")
+
+    -- Update on respawn
+    player.CharacterAdded:Connect(function(char)
+        character = char
+        hrp = char:WaitForChild("HumanoidRootPart")
+        humanoid = char:WaitForChild("Humanoid")
+    end)
+
+    local distancePerStep = 0.8
+    local interval = 0.08
+
+    while toggleStates.CFrameWalk do
+        task.wait(interval)
+
+        if humanoid and humanoid.MoveDirection.Magnitude > 0 then
+            local moveDir = humanoid.MoveDirection.Unit * distancePerStep
+            hrp.CFrame = hrp.CFrame + moveDir
+        end
+    end
+end
+
+-- Create Toggle Button Function
+local function createToggle(name, parent, posY, toggleKey)
+    local btn = Instance.new("TextButton", parent)
+    btn.Size = UDim2.new(0, 180, 0, 30)
+    btn.Position = UDim2.new(0, 10, 0, posY)
+    btn.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    btn.TextColor3 = Color3.new(1,1,1)
+    btn.Font = Enum.Font.Gotham
+    btn.TextSize = 13
+    btn.Text = name .. ": OFF"
+    btn.AutoButtonColor = false
+
+    local stroke = Instance.new("UIStroke", btn)
+    stroke.Thickness = 1.5
+    stroke.Color = Color3.fromRGB(255,255,255)
+
+    btn.MouseButton1Click:Connect(function()
+        toggleStates[toggleKey] = not toggleStates[toggleKey]
+        btn.Text = name .. ": " .. (toggleStates[toggleKey] and "ON" or "OFF")
+
+        -- Start/stop the respective loop
+        if toggleStates[toggleKey] then
+            if toggleKey == "BlatantMS" then
+                BlatantMSLoop()
+            elseif toggleKey == "LegitMS" then
+                LegitMSLoop()
+            elseif toggleKey == "LfgMS" then
+                LfgMSLoop()
+            elseif toggleKey == "CFrameWalk" then
+                CFrameWalkSpeed()
+            end
+        end
+    end)
+end
+
+-- Create Toggle Buttons for Various States
+createToggle("Blatant MS", frames["Catching"], 40, "BlatantMS")
+createToggle("Legit MS", frames["Catching"], 80, "LegitMS")
+createToggle("Lfg MS", frames["Catching"], 120, "LfgMS")
+createToggle("CFrame Walk", frames["Movement"], 40, "CFrameWalk")
+createToggle("F to TP", frames["Trolling"], 40, "FtoTP")
+
+-- Toggle UI Visibility
+ToggleButton.MouseButton1Click:Connect(function()
+    MainFrame.Visible = not MainFrame.Visible
+end)
+
+ScreenGui.Parent = Player.PlayerGui
