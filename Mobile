@@ -66,7 +66,7 @@ function lib:CreateWindow()
 	Title.Position = UDim2.new(0.0348837227, 0, 0.152173907, 0)
 	Title.Size = UDim2.new(0, 200, 0, 39)
 	Title.Font = Enum.Font.LuckiestGuy
-	Title.Text = "Yuno.lol V2 FREE"
+	Title.Text = "Quantum FF2"
 	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 	Title.TextSize = 18.000
 	Title.TextXAlignment = Enum.TextXAlignment.Left
